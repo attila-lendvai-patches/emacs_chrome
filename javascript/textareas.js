@@ -9,7 +9,6 @@
  * and licensed under the GPLv3. See the COPYING file for details
  */
 
-var editImgURL = chrome.extension.getURL("icons/gumdrop.png");
 var port = chrome.extension.connect();
 
 // For findTextAreas
@@ -52,6 +51,20 @@ function getTitle()
 }
 
 /*
+  getEditButton
+
+  Return an edit button
+*/
+function getEditButton(id)
+{
+    var button = document.createElement('div');
+    button.setAttribute("class", "ewe_edit_button");
+    button.setAttribute("edit_id", id);
+    button.addEventListener('click', editTextArea);
+    return button;
+}
+
+/*
   textAreaTracker
 
   This object wraps up all the information about a given text area on the page.
@@ -81,18 +94,10 @@ function textAreaTracker(text)
     if (enable_keys)
         this.text.addEventListener('keydown', this.keydownListener);
 
-    // The img 
+    // The edit button
     if (enable_button) {
-        this.image = document.createElement('img');
-        if (this.text.tagName == "DIV") {
-            this.image.setAttribute("class", "ewe_div_edit_button");
-        } else {
-            this.image.setAttribute("class", "ewe_ta_edit_button");
-        }
-        this.image.setAttribute("edit_id", this.edit_id);
-        this.image.src = editImgURL;
-        this.image.addEventListener('click', editTextArea);
-        this.text.parentNode.insertBefore(this.image, text.nextSibling);
+        this.button = getEditButton(this.edit_id);
+        this.text.parentNode.insertBefore(this.button, text.nextSibling);
     }
 
     // Some methods to get and set content
