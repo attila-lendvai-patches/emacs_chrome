@@ -60,6 +60,7 @@ function getEditButton(id)
     var button = document.createElement('div');
     button.setAttribute("class", "ewe_edit_button");
     button.setAttribute("edit_id", id);
+    button.setAttribute("style", 'background-image: url('+chrome.extension.getURL("icons/gumdrop.png")+");");
     button.addEventListener('click', editTextArea);
     return button;
 }
